@@ -18,28 +18,66 @@ public class SupportDeskApp {
             choice = scnr.nextLine();
 
             switch(choice){
-                case "1" -> {
-                    supportDesk.addTicket(new Ticket(5,"asd", "asd", "asd"));
-                }
-                case "2" -> {
-                    supportDesk.processNextTicket();
-                }
-                case "3" -> {
-                    supportDesk.viewAllActiveTickets();
-                }
-                case "4" -> {
-                    supportDesk.viewRecentResolved();
-                }
-                case "5" -> {
-                    supportDesk.reopenLastResolved();
-                }
-                case "6" -> {
-                    System.out.println("Thank you for using MDC Tech Support Ticket System!");
-                }
-                default -> {
-                    System.out.println("Invalid selection, please try again");
-                }
+                case "1" -> supportDesk.addTicket(createTicketFromInput(scnr));
+                case "2" -> supportDesk.processNextTicket();
+                case "3" -> supportDesk.viewAllActiveTickets();
+                case "4" -> supportDesk.viewRecentResolved();
+                case "5" -> supportDesk.reopenLastResolved();
+                case "6" -> System.out.println("Thank you for using MDC Tech Support Ticket System!");
+                default -> System.out.println("Invalid selection, please try again");
             }
+        }
+    }
+    private static Ticket createTicketFromInput(Scanner scnr) {
+        int id = validateIntInput(scnr);
+        String name = validateStringInput(scnr, "Enter requester name: ");
+        String issue = validateStringInput(scnr, "Enter issue: ");
+        String priority = validatePriority(scnr);
+
+        return new Ticket(id, name, issue, priority);
+    }
+
+    private static int validateIntInput(Scanner scnr) {
+        while (true) {
+            System.out.print("Enter ticket ID: ");
+            String input = scnr.nextLine().trim();
+
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number for ticket ID.");
+            }
+        }
+    }
+
+    private static String validateStringInput(Scanner scnr, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scnr.nextLine().trim();
+
+            if (!input.isEmpty()) {
+                return input;
+            }
+            else {
+                System.out.println("Input cannot be empty. Please enter a value.");
+            }
+        }
+    }
+
+
+    //Validates priority and returns a standardized priority (String)
+    private static String validatePriority(Scanner scnr) {
+        while (true) {
+            System.out.print("Enter priority (Low/Medium/High): ");
+            String priority = scnr.nextLine().trim();
+            if (priority.equalsIgnoreCase("Low") ||
+                    priority.equalsIgnoreCase("Medium") ||
+                    priority.equalsIgnoreCase("High")) {
+
+                return priority.substring(0, 1).toUpperCase() +
+                        priority.substring(1).toLowerCase();
+            }
+            System.out.println("Invalid priority. Please enter Low, Medium, or High.");
         }
     }
 }
