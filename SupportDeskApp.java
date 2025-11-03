@@ -28,6 +28,13 @@ public class SupportDeskApp {
             }
         }
     }
+
+
+    /*
+    This method, along with other input validation methods, could be extracted
+    to a dedicated TicketInputHandler class for better separation of concerns
+    and improved code organization.
+    */
     private static Ticket createTicketFromInput(Scanner scnr) {
         int id = validateIntInput(scnr);
         String name = validateStringInput(scnr, "Enter requester name: ");

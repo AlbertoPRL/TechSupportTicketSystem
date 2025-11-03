@@ -1,20 +1,28 @@
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class SupportDesk {
     private Queue<Ticket> activeTickets = new LinkedList<>();
     private Stack<Ticket> resolvedTickets = new Stack<>();
+    private HashSet<Integer> usedIds = new HashSet<>();
 
     public SupportDesk(){
 
     }
 
     public void addTicket(Ticket t){
-        activeTickets.add(t);
-        System.out.println("Ticket successfully added");
-        System.out.println(t);
-        System.out.println("_____________________");
+        if(!isDuplicateId(t.getId())){
+            activeTickets.add(t);
+            usedIds.add(t.getId());
+            System.out.println("Ticket successfully added.");
+            System.out.println(t);
+            System.out.println("_____________________");
+        }
+        else
+        {
+            System.out.printf("Ticket not added: ID %d already in use.\n", t.getId());
+            System.out.println("_____________________");
+        }
+
     }
 
     public void processNextTicket(){
@@ -22,7 +30,7 @@ public class SupportDesk {
             System.out.println("Processing following ticket: ");
             System.out.println();
             resolvedTickets.add(activeTickets.remove());
-            System.out.println("Ticket successfully processed");
+            System.out.println("Ticket successfully processed.");
         }
         else {
             System.out.println("There are no active tickets at this moment");
@@ -69,5 +77,9 @@ public class SupportDesk {
         else{
             System.out.println("There are no resolved tickets at this point");
         }
+    }
+
+    private boolean isDuplicateId(Integer id) {
+        return usedIds.contains(id);
     }
 }
